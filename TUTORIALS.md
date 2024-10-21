@@ -7,3 +7,8 @@ Marker clusterer
 https://github.com/Leaflet/Leaflet.markercluster
 https://leaflet.github.io/Leaflet.markercluster/example/marker-clustering-custom.html
 https://jsbin.com/fimaxap/2/edit?html,js,output
+https://www.geoapify.com/leaflet-geocoding-plugin/
+
+Pricing comparison
+https://www.geoapify.com/top-geocoding-services-comparison/
+https://www.geoapify.com/pricing/

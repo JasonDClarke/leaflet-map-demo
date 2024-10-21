@@ -1,8 +1,16 @@
-const map = L.map('map').setView([53.505, -0.09], 6);
+const map = L.map('map', { zoomControl: false }).setView([53.505, -0.09], 6);
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+const myAPIKey = apiKey; // Get an API Key on https://myprojects.geoapify.com
+const mapURL = L.Browser.retina
+  ? `https://maps.geoapify.com/v1/tile/{mapStyle}/{z}/{x}/{y}.png?apiKey={apiKey}`
+  : `https://maps.geoapify.com/v1/tile/{mapStyle}/{z}/{x}/{y}@2x.png?apiKey={apiKey}`;
+
+// Add map tiles layer. Set 20 as the maximal zoom and provide map data attribution.
+L.tileLayer(mapURL, {
+  attribution: 'Powered by <a href="https://www.geoapify.com/">Geoapify</a> | © OpenMapTiles © OpenStreetMap contributors',
+  apiKey: myAPIKey,
+  mapStyle: "osm-bright-smooth", // More map styles on https://apidocs.geoapify.com/docs/maps/map-tiles/
+  maxZoom: 20
 }).addTo(map);
 
 
@@ -42,3 +50,19 @@ function onLocationError(e) {
 }
 
 map.on('locationerror', onLocationError);
+
+// Add Geoapify Address Search control
+const addressSearchControl = L.control.addressSearch(myAPIKey, {
+    position: 'topleft',
+    resultCallback: (selectedAddress) => {
+      console.log(selectedAddress);
+      if (selectedAddress) {
+        map.flyTo([selectedAddress.lat, selectedAddress.lon], 8)
+      }
+    },
+    suggestionsCallback: (suggestions) => {
+      console.log(suggestions);
+    }
+  });
+  map.addControl(addressSearchControl);
+  L.control.zoom({ position: 'bottomright' }).addTo(map);
