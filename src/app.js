@@ -6,11 +6,22 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 
+// Cluster group logic start
+var markers = L.markerClusterGroup();
 
 exampleLocations.forEach((location) => {
     console.log(location)
-    const marker = L.marker([location.location.lat, location.location.lng]).addTo(map);
+    const title = location.location.key
+    const marker = L.marker(new L.LatLng(location.location.lat, location.location.lng), {
+        title: title
+      })
+    marker.bindPopup(title);
+
+    markers.addLayer(marker);
 })
+
+map.addLayer(markers)
+// cluster group logic end
 
 // user location logic
 map.locate({setView: true, maxZoom: 16});
